@@ -1,0 +1,16 @@
+from pathlib import Path
+p=Path('public/study-lab.html')
+s=p.read_text(encoding='utf-8')
+s=s.replace('3 hướng thiết kế thẻ chương trình','3 hướng thiết kế Góc học tập').replace('01 · Kim tự tháp','01 · Sticky notes').replace('02 · Toy blocks','02 · Study tickets').replace('03 · So le','03 · Reading list').replace('Chọn môn bạn cần.<br><em>Bật mode học tập.</em>','Học một chút.<br><em>Mang theo mỗi ngày.</em>').replace('Từ bài học trên lớp<br>đến kỳ thi quan trọng.','Góc nhỏ cho những lần tự học.<br>Đọc nhanh, thử ngay bằng cách của bạn.')
+a=s.index('const courses=');b=s.index('stage.innerHTML',a)
+s=s[:a]+'''const courses=[['Say it.','Speaking · 3 phút đọc','Bí ý khi nói? Bắt đầu bằng một câu đơn giản.','Một công thức nhỏ để luyện diễn đạt mỗi ngày.',[]],['Words.','Từ vựng · 3 phút đọc','Đừng để từ mới chỉ nằm trong vở.','Biến một từ mới thành một câu chuyện của bạn.',[]],['Focus.','Góc tự học · 2 phút đọc','Một buổi học nhỏ, nhưng có đích đến.','Bớt mở quá nhiều tài liệu. Chọn một việc để làm xong.',[]]];
+'''+s[b:]
+s=s.replace('Hỏi lớp này','Đọc bài ngắn')
+a=s.index('const notes=');b=s.index('document.querySelectorAll',a)
+s=s[:a]+'''const notes={pyramid:'01 / Giấy ghi chú có băng dính, nghiêng nhẹ. Mỗi bài là một ý tưởng mang theo.',toys:'02 / Vé bài học với đường xé và số thứ tự. Vui, gọn và đồng bộ tinh thần Toy blocks.',deck:'03 / Danh sách đọc gọn với dấu trang màu. Dễ lướt và ít chiếm chiều cao nhất.'};hint.textContent=notes.pyramid;
+'''+s[b:]
+css='''<style>
+.card ul{display:none}.card .mark{font-size:32px;letter-spacing:-1.5px}.pyramid .card{width:100%!important;border-radius:3px 3px 22px 3px;box-shadow:3px 6px 0 #172c4812;margin-bottom:30px;transform:rotate(-2deg)!important;padding-top:32px}.pyramid .card:nth-child(2){transform:rotate(2deg)!important}.pyramid .card:before{content:'';position:absolute;top:-10px;left:calc(50% - 32px);width:64px;height:24px;background:#fff9;border:1px solid #172c4810;transform:rotate(-5deg)}.toys .card{transform:none!important;margin:0 0 20px!important;box-shadow:none;border:1px solid #172c4830;border-radius:18px;padding-bottom:12px}.toys .top:after{display:none}.toys .top{border-bottom:1px dashed #172c4850;padding-bottom:18px}.toys .card:before{content:'';position:absolute;left:-10px;top:85px;width:20px;height:20px;background:var(--paper);border-radius:50%}.toys .card:after{content:'';position:absolute;right:-10px;top:85px;width:20px;height:20px;background:var(--paper);border-radius:50%}.toys .mark{background:none;padding:0}.deck .card{margin:0!important;padding:20px 0 12px;border-radius:0;background:transparent!important;color:var(--ink)!important;border:0;border-bottom:1px solid #172c4820}.deck .card .mark{color:var(--blue)!important;font-size:18px;letter-spacing:-.5px}.deck .card .label{color:#64738b!important}.deck .card .cta{color:var(--blue)!important;border:0}.deck .top{margin-bottom:12px}.deck .index{font-size:14px;opacity:1;background:var(--yellow);padding:8px 10px;border-radius:4px}.deck .card h2{max-width:none;font-size:22px}.deck .card p{margin-bottom:2px}.deck .card:nth-child(2) .index{background:var(--pink)}.deck .card:nth-child(3) .index{background:var(--sky)}
+</style>'''
+s=s.replace('</head>',css+'</head>') if '</head>' in s else s.replace('</style><header>', '</style>'+css+'<header>')
+p.write_text(s,encoding='utf-8')
